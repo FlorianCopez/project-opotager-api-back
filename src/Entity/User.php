@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -59,6 +61,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Garden::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $gardens;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Favorite::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $favorites;
+
+    public function __construct()
+    {
+        $this->gardens = new ArrayCollection();
+        $this->favorites = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -200,6 +218,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Garden>
+     */
+    public function getGardens(): Collection
+    {
+        return $this->gardens;
+    }
+
+    public function addGarden(Garden $garden): self
+    {
+        if (!$this->gardens->contains($garden)) {
+            $this->gardens[] = $garden;
+            $garden->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGarden(Garden $garden): self
+    {
+        if ($this->gardens->removeElement($garden)) {
+            // set the owning side to null (unless already changed)
+            if ($garden->getUser() === $this) {
+                $garden->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Favorite>
+     */
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(Favorite $favorite): self
+    {
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites[] = $favorite;
+            $favorite->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(Favorite $favorite): self
+    {
+        if ($this->favorites->removeElement($favorite)) {
+            // set the owning side to null (unless already changed)
+            if ($favorite->getUser() === $this) {
+                $favorite->setUser(null);
+            }
+        }
 
         return $this;
     }

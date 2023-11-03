@@ -32,6 +32,12 @@ class Picture
      */
     private $updatedAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Garden::class, inversedBy="pictures")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $garden;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +75,18 @@ class Picture
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getGarden(): ?Garden
+    {
+        return $this->garden;
+    }
+
+    public function setGarden(?Garden $garden): self
+    {
+        $this->garden = $garden;
 
         return $this;
     }
