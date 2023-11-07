@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\GardenRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -117,6 +118,8 @@ class Garden
 
     public function __construct()
     {
+        $this->createdAt = new DateTimeImmutable();
+        $this->checked = 'New';
         $this->pictures = new ArrayCollection();
         $this->favorites = new ArrayCollection();
     }
