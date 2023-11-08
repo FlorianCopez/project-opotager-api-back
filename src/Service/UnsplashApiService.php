@@ -15,7 +15,13 @@ class UnsplashApiService
         $this->keyApi = $keyApi;
     }
 
-    public function fetchPhotoRandom(string $search)
+    /**
+     * Fetch a random pictures
+     *
+     * @param string $search theme to search
+     * @return string|bool url of picture
+     */
+    public function fetchPhotoRandom(string $search): ?string
     {
         $response = $this->client->request(
             'GET',
@@ -28,8 +34,15 @@ class UnsplashApiService
             ]
         );
 
-        $photoUrl = $response->toArray(['urls']['regular']);
+        $content = $response->getContent();
+        $data = json_decode($content, true);
 
-        return $photoUrl;
+        if (!$data) {
+            return false;
+        }
+
+        $url = $data['urls']['regular'];
+
+        return $url;
     }
 }

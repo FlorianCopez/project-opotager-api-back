@@ -13,14 +13,21 @@ class NominatimApiService
         $this->client = $client;
     }
 
-    public function getCoordinates(string $city, string $location)
+    /**
+     * Fetch coordinates lat and lon a address
+     *
+     * @param string $city search city
+     * @param string $location search address
+     * @return array|bool coordinates of city 
+     */
+    public function getCoordinates(string $city, string $location = ''): ?array
     {
         $response = $this->client->request(
             'GET',
             'https://nominatim.openstreetmap.org/search?',
             [
                 'query' => [
-                    'city' => $city . $location,
+                    'city' => $location . ' ' . $location,
                     'format' => 'jsonv2',
                 ]
             ]
@@ -52,5 +59,7 @@ class NominatimApiService
         $coordinates = [];
         $coordinates['lat'] = $data[0]['lat'];
         $coordinates['lon'] = $data[0]['lon'];
+
+        return $coordinates;
     }
 }
