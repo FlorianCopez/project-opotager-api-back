@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\FavoriteRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=FavoriteRepository::class)
@@ -18,32 +20,20 @@ class Favorite
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Garden::class, inversedBy="favorites")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $garden;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="favorites")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Garden::class, inversedBy="favorites")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $garden;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getGarden(): ?Garden
-    {
-        return $this->garden;
-    }
-
-    public function setGarden(?Garden $garden): self
-    {
-        $this->garden = $garden;
-
-        return $this;
     }
 
     public function getUser(): ?User
@@ -54,6 +44,18 @@ class Favorite
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getGarden(): ?Garden
+    {
+        return $this->garden;
+    }
+
+    public function setGarden(?Garden $garden): self
+    {
+        $this->garden = $garden;
 
         return $this;
     }
