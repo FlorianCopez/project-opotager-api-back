@@ -6,7 +6,9 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class NominatimApiService
 {
+
     private $client;
+
 
     public function __construct(HttpClientInterface $client)
     {
@@ -14,52 +16,51 @@ class NominatimApiService
     }
 
     /**
-     * Fetch coordinates lat and lon a address
+     * Fetch coordinates lat and lon for an address
      *
      * @param string $city search city
      * @param string $location search address
      * @return array|bool coordinates of city 
      */
-    public function getCoordinates(string $city, string $location = ''): ?array
+    public function getCoordinates($city, $adress = null)
     {
+
         $response = $this->client->request(
             'GET',
-            'https://nominatim.openstreetmap.org/search?',
+            'https://nominatim.openstreetmap.org/search',
             [
-                'query' => [
-                    'city' => $location . ' ' . $location,
-                    'format' => 'jsonv2',
+                "query" => [
+                    "q" => $adress . $city,
+                    "format" => "jsonv2"
                 ]
             ]
         );
 
-        $content = $response->getContent();
-        $data = json_decode($content, true);
+        $cityAllCoordinates = $response->toArray();
 
-        if (!$data) {
+        if (!$cityAllCoordinates) {
             $response = $this->client->request(
                 'GET',
-                'https://nominatim.openstreetmap.org/search?',
+                'https://nominatim.openstreetmap.org/search',
                 [
-                    'query' => [
-                        'city' => $city,
-                        'format' => 'jsonv2',
+                    "query" => [
+                        "q" => $city,
+                        "format" => "jsonv2"
                     ]
                 ]
             );
 
-            $content = $response->getContent();
-            $data = json_decode($content, true);
+            $cityAllCoordinates = $response->toArray();
 
-            if (!$data) {
+            if (!$cityAllCoordinates) {
                 return false;
             }
         }
 
-        $coordinates = [];
-        $coordinates['lat'] = $data[0]['lat'];
-        $coordinates['lon'] = $data[0]['lon'];
+        $cityCoordinates = [];
+        $cityCoordinates["lat"] = $cityAllCoordinates[0]["lat"];
+        $cityCoordinates["lon"] = $cityAllCoordinates[0]["lon"];
 
-        return $coordinates;
+        return $cityCoordinates;
     }
 }

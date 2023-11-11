@@ -9,6 +9,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -19,11 +21,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"gardensWithRelation"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"gardensWithRelation"})
+     * @Assert\NotBlank
+     * @Assert\Email
      */
     private $email;
 
@@ -35,31 +41,43 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=64)
+     * @ORM\Column(type="string", length=64, unique=true)
+     * @Groups({"gardensWithRelation"})
+     * @Assert\NotBlank
+     * @Assert\Length(max=64)
      */
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=20, nullable=true)
+     * @ORM\Column(type="string", length=20)
+     * @Groups({"gardensWithRelation"})
+     * @Assert\NotBlank
+     * @Assert\Length(max=20)
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"gardensWithRelation"})
+     * @Assert\Url
      */
     private $avatar;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Groups({"gardensWithRelation"})
+     * @Assert\NotBlank
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @Groups({"gardensWithRelation"})
      */
     private $updatedAt;
 
@@ -69,15 +87,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $gardens;
 
     /**
-     * @ORM\OneToMany(targetEntity=Favorite::class, mappedBy="user", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Favorite::class, mappedBy="user", orphanRemoval=true, cascade={"persist"})
      */
     private $favorites;
 
     public function __construct()
     {
-        $this->createdAt = new DateTimeImmutable();
         $this->gardens = new ArrayCollection();
         $this->favorites = new ArrayCollection();
+        $this->createdAt = new DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -112,7 +130,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->username;
+        return (string) $this->email;
     }
 
     /**
@@ -181,7 +199,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->phone;
     }
 
-    public function setPhone(?string $phone): self
+    public function setPhone(string $phone): self
     {
         $this->phone = $phone;
 
