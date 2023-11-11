@@ -19,7 +19,7 @@ class Garden
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"gardensWithRelation"})
+     * @Groups({"gardensWithRelation", "pictures"})
      */
     private $id;
 

@@ -17,13 +17,13 @@ class Picture
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"gardensWithRelation"})
+     * @Groups({"gardensWithRelation", "pictures"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"gardensWithRelation"})
+     * @Groups({"gardensWithRelation", "pictures"})
      * @Assert\NotBlank
      * @Assert\Url
      * @Assert\Length(max=255)
@@ -33,17 +33,20 @@ class Picture
     /**
      * @ORM\Column(type="datetime_immutable")
      * @Assert\NotBlank
+     * @Groups({"pictures"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @Groups({"pictures"})
      */
     private $updatedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Garden::class, inversedBy="pictures")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"pictures"})
      */
     private $garden;
 

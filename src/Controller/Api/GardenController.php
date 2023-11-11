@@ -39,7 +39,7 @@ class GardenController extends AbstractController
      * 
      * get gardens using a town's coordinates
      */
-    public function getGardensBySearch(NominatimApiService $nominatimApi, Request $request, GardenRepository $gardenRepository)
+    public function getGardensBySearch(NominatimApiService $nominatimApi, Request $request, GardenRepository $gardenRepository): JsonResponse
     {
         $location = $request->query->get('location');
         $dist = $request->query->get('dist');
@@ -79,7 +79,7 @@ class GardenController extends AbstractController
      * 
      * add garden
      */
-    public function postGardens(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager, NominatimApiService $nominatimApi): JsonResponse
+    public function postGardens(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $em, NominatimApiService $nominatimApi): JsonResponse
     {
         $jsonContent = $request->getContent();
 
@@ -110,8 +110,8 @@ class GardenController extends AbstractController
             return $this->json($dataErrors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $entityManager->persist($garden);
-        $entityManager->flush();
+        $em->persist($garden);
+        $em->flush();
 
         return $this->json([$garden], Response::HTTP_CREATED, [
             "Location" => $this->generateUrl("app_api_garden_getGardenById", ["id" => $garden->getId()])
@@ -124,9 +124,9 @@ class GardenController extends AbstractController
     /**
      * @Route("/{id}", name="app_api_garden_putGardenById", methods={"PUT"})
      * 
-     * update garden
+     * update garden by id
      */
-    public function putGardenById(Garden $garden, Request $request, SerializerInterface $serializer, NominatimApiService $nominatimApi, ValidatorInterface $validator, EntityManagerInterface $em)
+    public function putGardenById(Garden $garden, Request $request, SerializerInterface $serializer, NominatimApiService $nominatimApi, ValidatorInterface $validator, EntityManagerInterface $em): JsonResponse
     {
         $jsonContent = $request->getContent();
 
@@ -162,9 +162,9 @@ class GardenController extends AbstractController
     /**
      * @Route("/{id}", name="app_api_garden_deleteGardenById", methods={"DELETE"})
      * 
-     * delete garden
+     * delete garden by id
      */
-    public function deleteGardenById(GardenRepository $gardenRepository, Garden $garden = null)
+    public function deleteGardenById(GardenRepository $gardenRepository, Garden $garden = null): JsonResponse
     {
         if (!$garden) {
             return $this->json(['error' => 'Le jardin n\'existe pas.'], Response::HTTP_BAD_REQUEST);
