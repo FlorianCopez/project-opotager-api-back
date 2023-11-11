@@ -28,6 +28,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Groups({"gardensWithRelation"})
+     * @Assert\NotBlank
+     * @Assert\Email
      */
     private $email;
 
@@ -39,30 +41,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=64)
+     * @ORM\Column(type="string", length=64, unique=true)
      * @Groups({"gardensWithRelation"})
+     * @Assert\NotBlank
+     * @Assert\Length(max=64)
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=20)
      * @Groups({"gardensWithRelation"})
+     * @Assert\NotBlank
+     * @Assert\Length(max=20)
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"gardensWithRelation"})
+     * @Assert\Url
      */
     private $avatar;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      * @Groups({"gardensWithRelation"})
+     * @Assert\NotBlank
      */
     private $createdAt;
 

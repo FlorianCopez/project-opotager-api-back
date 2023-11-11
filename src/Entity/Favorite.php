@@ -22,12 +22,14 @@ class Favorite
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="favorites")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Garden::class, inversedBy="favorites")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank
      */
     private $garden;
 

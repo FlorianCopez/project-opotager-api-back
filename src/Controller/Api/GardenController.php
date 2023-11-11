@@ -24,6 +24,8 @@ class GardenController extends AbstractController
 {
     /**
      * @Route("/", name="app_api_garden_getGardens", methods={"GET"})
+     * 
+     * get all the gardens
      */
     public function getGardens(GardenRepository $gardenRepository): JsonResponse
     {
@@ -33,7 +35,39 @@ class GardenController extends AbstractController
     }
 
     /**
+     * @Route("/search", name="app_api_garden_getGardensBySearch", methods={"GET"})
+     * 
+     * get gardens using a town's coordinates
+     */
+    public function getGardensBySearch(NominatimApiService $nominatimApi, Request $request, GardenRepository $gardenRepository)
+    {
+        $location = $request->query->get('location');
+        $dist = $request->query->get('dist');
+
+        if (empty($location) || !is_numeric($dist)) {
+            return $this->json(['error' => 'Paramètres de requête invalides. Assurez-vous que "location" est spécifié et "dist" est un nombre.'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $coordinatesCityApi = $nominatimApi->getCoordinates($location);
+
+        if ($coordinatesCityApi === false) {
+            return $this->json(['error' => "La ville que vous recherchez est introuvable."], Response::HTTP_BAD_REQUEST);
+        }
+
+        $cityLat = $coordinatesCityApi['lat'];
+        $cityLon = $coordinatesCityApi['lon'];
+
+        $distance = $dist ?? 10;
+
+        $gardens = $gardenRepository->findGardensByCoordinates($cityLat, $cityLon, $distance);
+
+        return $this->json($gardens, Response::HTTP_OK);
+    }
+
+    /**
      * @Route("/{id}", name="app_api_garden_getGardenById", methods={"GET"})
+     * 
+     * get garden by id
      */
     public function getGardenById(Garden $garden): JsonResponse
     {
@@ -42,6 +76,8 @@ class GardenController extends AbstractController
 
     /**
      * @Route("/", name="app_api_garden_postGardens", methods={"POST"})
+     * 
+     * add garden
      */
     public function postGardens(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager, NominatimApiService $nominatimApi): JsonResponse
     {
@@ -84,8 +120,11 @@ class GardenController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/{id}", name="app_api_garden_putGardenById", methods={"PUT"})
+     * 
+     * update garden
      */
     public function putGardenById(Garden $garden, Request $request, SerializerInterface $serializer, NominatimApiService $nominatimApi, ValidatorInterface $validator, EntityManagerInterface $em)
     {
@@ -122,6 +161,8 @@ class GardenController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_api_garden_deleteGardenById", methods={"DELETE"})
+     * 
+     * delete garden
      */
     public function deleteGardenById(GardenRepository $gardenRepository, Garden $garden = null)
     {

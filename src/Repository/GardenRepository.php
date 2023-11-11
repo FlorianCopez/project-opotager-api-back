@@ -39,28 +39,55 @@ class GardenRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Garden[] Returns an array of Garden objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('g.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * get gardens using a town's coordinates
+     *
+     * @param float $lat city latitude
+     * @param float $lon city longitude
+     * @param integer $distance maximum distance from the city
+     * @return gardens[] array of gardens found
+     */
+    public function findGardensByCoordinates(float $lat, float $lon, int $dist)
+    {
+        $formule = "(6366*acos(cos(radians($lat))*cos(radians(`lat`))*cos(radians(`lon`) - radians($lon))+sin(radians($lat))*sin(radians(`lat`))))";
 
-//    public function findOneBySomeField($value): ?Garden
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+                SELECT garden.*, user.username, user.email, user.phone, user.avatar,' . $formule . ' AS dist
+                FROM garden
+                INNER JOIN user ON garden.user_id = user.id
+                WHERE ' . $formule . '<= :dist 
+                ORDER BY dist ASC
+                ';
+
+        $resultSet = $conn->executeQuery($sql, ['dist' => $dist]);
+
+        return $resultSet->fetchAllAssociative();
+    }
+
+    //    /**
+    //     * @return Garden[] Returns an array of Garden objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('g')
+    //            ->andWhere('g.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('g.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Garden
+    //    {
+    //        return $this->createQueryBuilder('g')
+    //            ->andWhere('g.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

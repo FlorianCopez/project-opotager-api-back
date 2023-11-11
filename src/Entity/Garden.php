@@ -26,90 +26,112 @@ class Garden
     /**
      * @ORM\Column(type="string", length=128)
      * @Groups({"gardensWithRelation"})
+     * @Assert\NotBlank
+     * @Assert\Length(max=128)
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=1000)
      * @Groups({"gardensWithRelation"})
+     * @Assert\NotBlank
+     * @Assert\Length(max=1000)
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"gardensWithRelation"})
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
     private $location;
 
     /**
      * @ORM\Column(type="string", length=10)
-     * @Groups({"gardensWithRelation"})
+     * @Groups({"gardensWithRelation"})     
+     * @Assert\NotBlank
+     * @Assert\Length(max=10)
      */
     private $postalCode;
 
     /**
      * @ORM\Column(type="string", length=64)
-     * @Groups({"gardensWithRelation"})
+     * @Groups({"gardensWithRelation"})     
+     * @Assert\NotBlank
+     * @Assert\Length(max=64)
      */
     private $city;
 
     /**
      * @ORM\Column(type="float")
      * @Groups({"gardensWithRelation"})
+     * @Assert\NotBlank
      */
     private $lat;
 
     /**
      * @ORM\Column(type="float")
      * @Groups({"gardensWithRelation"})
+     * @Assert\NotBlank
      */
     private $lon;
 
     /**
      * @ORM\Column(type="string", length=30)
      * @Groups({"gardensWithRelation"})
+     * @Assert\NotBlank
+     * @Assert\Length(max=30)
      */
     private $checked;
 
     /**
      * @ORM\Column(type="boolean")
      * @Groups({"gardensWithRelation"})
+     * @Assert\NotNull
      */
     private $water;
 
     /**
      * @ORM\Column(type="boolean")
      * @Groups({"gardensWithRelation"})
+     * @Assert\NotNull
      */
     private $tool;
 
     /**
      * @ORM\Column(type="boolean")
      * @Groups({"gardensWithRelation"})
+     * @Assert\NotNull
      */
     private $shed;
 
     /**
      * @ORM\Column(type="string", length=128)
      * @Groups({"gardensWithRelation"})
+     * @Assert\NotBlank
+     * @Assert\Length(max=128)
      */
     private $state;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"gardensWithRelation"})
+     * @Assert\NotBlank
      */
     private $surface;
 
     /**
      * @ORM\Column(type="boolean")
      * @Groups({"gardensWithRelation"})
+     * @Assert\NotNull
      */
     private $phoneAccess;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      * @Groups({"gardensWithRelation"})
+     * @Assert\NotBlank
      */
     private $createdAt;
 

@@ -24,11 +24,15 @@ class Picture
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"gardensWithRelation"})
+     * @Assert\NotBlank
+     * @Assert\Url
+     * @Assert\Length(max=255)
      */
     private $url;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Assert\NotBlank
      */
     private $createdAt;
 
