@@ -127,6 +127,6 @@ class PictureController extends AbstractController
             return $this->json(['error' => 'Une erreur s\'est produite lors de la suppression de la photo.'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        return $this->json(['message' => 'La photo à bien été supprimé'], Response::HTTP_OK);
+        return $this->json(['message' => 'La photo à bien été supprimée'], Response::HTTP_OK);
     }
 }

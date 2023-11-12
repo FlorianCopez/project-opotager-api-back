@@ -21,13 +21,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"gardensWithRelation"})
+     * @Groups({"gardensWithRelation", "users"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"gardensWithRelation"})
+     * @Groups({"gardensWithRelation", "users"})
      * @Assert\NotBlank
      * @Assert\Email
      */
@@ -47,7 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=64, unique=true)
-     * @Groups({"gardensWithRelation"})
+     * @Groups({"gardensWithRelation", "users"})
      * @Assert\NotBlank
      * @Assert\Length(max=64)
      */
@@ -55,7 +55,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=20)
-     * @Groups({"gardensWithRelation"})
+     * @Groups({"gardensWithRelation", "users"})
      * @Assert\NotBlank
      * @Assert\Length(max=20)
      */
@@ -63,21 +63,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"gardensWithRelation"})
+     * @Groups({"gardensWithRelation", "users"})
      * @Assert\Url
      */
     private $avatar;
 
     /**
      * @ORM\Column(type="datetime_immutable")
-     * @Groups({"gardensWithRelation"})
+     * @Groups({"gardensWithRelation", "users"})
      * @Assert\NotBlank
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @Groups({"gardensWithRelation"})
+     * @Groups({"gardensWithRelation", "users"})
      */
     private $updatedAt;
 
@@ -122,7 +122,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     /**
@@ -130,7 +130,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     /**
