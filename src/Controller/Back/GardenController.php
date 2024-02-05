@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/back/gardens")
+ * @Route("/back/jardins")
  */
 class GardenController extends AbstractController
 {
@@ -42,7 +42,7 @@ class GardenController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="app_back_garden_edit", methods={"GET", "POST"})
+     * @Route("/{id}/modifier", name="app_back_garden_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Garden $garden, GardenRepository $gardenRepository, NominatimApiService $nominatimApi): Response
     {
