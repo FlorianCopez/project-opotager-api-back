@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}O'Potager | Jardin n°{{ garden.user.username }}
+{% endblock %}
+
+{% block titlePage %}Jardins de
+	{{ garden.user.username }}
+{% endblock %}
+
+{% block gardensActive %}active-page
+{% endblock %}
+
+{% block body %}
+	<div class="card">
+		<div class="card__title">
+			<h3>{{ garden.title }}</h3>
+		</div>
+
+		<div class="card__body--gardens">
+			<div class="card__body__informations">
+				<p>{{ garden.description }}</p>
+				<div class="card__body__pictures">
+					<h3 class="card__body__pictures--title">Photo(s)</h3>
+					{% if garden.pictures is not empty %}
+						<div class="card__body__pictures--layout">
+							{% for index, picture in garden.pictures %}
+								<img src="{{ picture.url }}" alt="image du jardin de {{ garden.user.username }} n°{{ index }}">
+							{% endfor %}
+						</div>
+					{% else %}
+						<p>Aucune photo(s) ajoutée(s).</p>
+					{% endif %}
+				</div>
+			</div>
+
+			<div class="card__lists">
+				<div class="card__list">
+					<h3 class="card__list__title">
+						<i class="bi bi-pin-map-fill"></i>
+						Localisation
+					</h3>
+					<ul class="card__list__body">
+						<li>
+							{{ garden.location }}<br>
+							{{ garden.postalCode}},
+							{{ garden.city }}
+						</li>
+					</ul>
+				</div>
+				<div class="card__list">
+					<h3 class="card__list__title">
+						<i class="bi bi-list-ul"></i>
+						Caractéristiques</h3>
+					<ul class="card__list__body">
+						<li>
+							<span>Surface :</span>
+							{{ garden.surface }}
+							m2</li>
+						<li>
+							<span>Etat du jardin :</span>
+							{{ garden.state }}</li>
+						<li>
+							<span>Abri de jardin :</span>
+							{{ garden.shed ? 'Oui' : 'Non' }}</li>
+						<li>
+							<span>Outils à disposition :</span>
+							{{ garden.shed ? 'Oui' : 'Non' }}</li>
+						<li>
+							<span>Point d'eau :</span>
+							{{ garden.water ? 'Oui' : 'Non' }}</li>
+						<li>
+							<span>L'utilisateur accepte t-il de partager son numero de téléphone :</span>
+							{{ garden.phoneAccess ? 'Oui' : 'Non'}}</li>
+						<li>
+							<span>Statut de l'annonce :</span>
+							{{ garden.checked }}</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="actions__links">
+			<a class="actions__link" href="{{ path('app_back_garden_index') }}">
+				{{ include('fragments/_button.html.twig', {'button_label' : 'Retour à la liste', 'action': ''}) }}
+			</a>
+			<a class="actions__link" href="{{ path('app_back_garden_edit', {'id': garden.id}) }}">
+				{{ include('fragments/_button.html.twig', {'button_label' : 'Modifier', 'action': 'edit'}) }}
+			</a>
+			{{ include('back/garden/_delete_form.html.twig') }}
+		</div>
+
+		<div class="card-footer card__footer">
+			Ajouté le :
+			{{ garden.createdAt|date('d-m-Y')}}
+			/ Dernière modification :
+			{{ garden.updatedAt ? garden.updatedAt|date('d-m-Y') : 'Aucune modification' }}
+		</div>
+	</div>
+
+{% endblock %}

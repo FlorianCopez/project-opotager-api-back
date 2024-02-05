@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}O'potager | Liste des Jardins
+{% endblock %}
+
+{% block titlePage %}Liste des jardins
+{% endblock %}
+
+{% block gardensActive %}active-page
+{% endblock %}
+
+{% block body %}
+	<section class="list">
+		<table id="gardenTable" class="table">
+			<thead>
+				<tr class="list__header">
+					<th>ID</th>
+					<th>Titre</th>
+					<th>Adresse</th>
+					<th>Code Postal</th>
+					<th>Ville</th>
+					<th>Status</th>
+					<th class="list__header__items">Crée le</th>
+					<th class="list__header__items">Mise à jour le</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for garden in gardens %}
+					<tr class="list__content">
+						<td>{{ garden.id }}</td>
+						<td>{{ garden.title }}</td>
+						<td>{{ garden.location }}</td>
+						<td>{{ garden.postalCode }}</td>
+						<td>{{ garden.city }}</td>
+						<td>{{ garden.checked }}</td>
+						<td>{{ garden.createdAt ? garden.createdAt|date('d-m-Y') : '' }}</td>
+						<td>{{ garden.updatedAt ? garden.updatedAt|date('d-m-Y') : '' }}</td>
+						<td>
+							<a class="list__content__icon" href="{{ path('app_back_garden_show', {'id': garden.id}) }}">
+								<i class="bi bi-eye-fill list__content__icon--eye"></i>
+							</a>
+							<a class="list__content__icon" href="{{ path('app_back_garden_edit', {'id': garden.id}) }}">
+								<i class="bi bi-pencil-square list__content__icon--pencil"></i>
+							</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="18">no records found</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</section>
+
+{% endblock %}

@@ -1,0 +1,6 @@
+{{ form_start(form) }}
+{{ form_widget(form) }}
+<div class="form__action">
+	{{ include('fragments/_button.html.twig', {'button_label': button_label|default('Enregistrer'), 'action': 'update' }) }}
+</div>
+{{ form_end(form) }}

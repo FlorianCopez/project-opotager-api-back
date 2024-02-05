@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="error-page">
+	{% if status_code is same as 403 %}
+		<img class='error-page__image' src="{{ asset('images/error403.png') }}" alt="image d'erreur 403">
+		<h2 class='error-page__title'>Accès refusé. Vous n'avez pas les autorisations nécessaires pour accéder à cette page. Si vous pensez qu'il s'agit d'une erreur, veuillez vérifier vos permissions ou contactez un administrateur.</h2>
+	{% elseif status_code is same as 404 %}
+		<img class="error-page__image" src="{{ asset('images/error404.png') }}" alt="image d'erreur 404">
+		<h2 class="error-page__title">Désolé, la page que vous recherchez semble introuvable. Il est possible qu'elle ait été déplacée, renommée ou supprimée. Veuillez vérifier l'URL ou retourner à la page d'accueil. Si le problème persiste, n'hésitez pas à nous contacter pour obtenir de l'aide.</h2>
+	{% elseif status_code is same as 500 %}
+		<img class='error-page__image' src="{{ asset('images/error500.png') }}" alt="image d'erreur 500">
+		<h2 class='error-page__title'>Oups ! Une erreur interne du serveur s'est produite. Nous vous prions de nous excuser pour ce désagrément. Veuillez réessayer ultérieurement.</h2>
+	{% elseif status_code is same as 503 %}
+		<img class='error-page__image' src="{{ asset('images/error503.png') }}" alt="image d'erreur 503">
+		<h2 class='error-page__title'>Service non disponible pour le moment. Nous effectuons actuellement une maintenance ou rencontrons des problèmes temporaires. Nous nous excusons pour tout inconvénient et vous encourageons à réessayer un peu plus tard.</h2>
+	{% else %}
+		<img class='error-page__image' src="{{ asset('images/error.png') }}" alt="image d'erreur">
+		<h2 class='error-page__title'>Désolé, une erreur inattendue s'est produite. Nous vous recommandons de revenir plus tard. Si le problème persiste, n'hésitez pas à nous contacter pour obtenir de l'aide. Merci de votre compréhension.</h2>
+	{% endif %}
+
+	<a class="d-block text-center my-4" href="{{path('app_back_main_home')}}">
+		{{ include('fragments/_button.html.twig', {'button_label' : 'Retourner à l\'accueil', 'action': ''})}}
+</a>
+</div>
+
+{% endblock %}

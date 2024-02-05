@@ -1,0 +1,29 @@
+<button type="button" class="btn button__delete" data-bs-toggle="modal" data-bs-target="#confirmationModal">
+	<i class="bi bi-file-earmark-x"></i>
+	Supprimer
+</button>
+
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				Êtes-vous sûr de vouloir supprimer cet élément ?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+				<form method="post" action="{{ path('app_back_user_delete', {'id': user.id}) }}" id="deleteForm">
+					<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+					<button type="submit" class="btn button__delete">
+						<i class="bi bi-file-earmark-x"></i>
+						Supprimer
+					</button>
+				</form>
+				{# Formulaire de suppression directement dans le template #}
+			</div>
+		</div>
+	</div>
+</div>

@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -48,7 +49,7 @@ class UserController extends AbstractController
      * 
      * add user
      */
-    public function postUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $em): JsonResponse
+    public function postUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $em, UserPasswordHasherInterface $userPasswordHasher): JsonResponse
     {
         $jsonContent = $request->getContent();
 
@@ -57,6 +58,9 @@ class UserController extends AbstractController
         } catch (NotEncodableValueException $e) {
             return $this->json(["error" => "JSON_INVALID"], Response::HTTP_BAD_REQUEST);
         }
+
+        $password = $user->getPassword();
+        $user->setPassword($userPasswordHasher->hashPassword($user, $password));
 
         $errors = $validator->validate($user);
 

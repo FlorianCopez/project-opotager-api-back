@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}O'Potager | Profil de
+	{{ user.username }}
+{% endblock %}
+
+{% block titlePage %}
+	{% if app.user.id == user.id %}
+		Mon profil
+	{% else %}
+		Profil de
+		{{ user.username }}
+	{% endif %}
+{% endblock %}
+
+{% block usersActive %}active-page
+{% endblock %}
+
+{% block body %}
+	<div class="card">
+		<div class="card__body--user">
+			<div class="card__body__layout">
+				<div class="card__body__avatar">
+					<img src="{{ user.avatar }}" class="avatar" alt="Image de profil de {{ user.username }}">
+				</div>
+				<div class="card__body__informations--user">
+					<h3>{{ user.username }}</h3>
+					<span>
+						{% set break = false %}
+						{% for role in user.roles %}
+							{% if role == "ROLE_ADMIN" %}
+								Administrateur
+								{% set break = true %}
+							{% endif %}
+							{% if not break %}
+								Utilisateur
+							{% endif %}
+						{% endfor %}
+					</span>
+				</div>
+				<div class="card__list">
+					<h3 class="card__list__title">
+						<i class="bi bi-person-lines-fill"></i>
+						Coordonnées</h3>
+					<ul class="card__list__body">
+						<li>Email :
+							{{ user.email }}</li>
+						<li>Téléphone :
+							{{ user.phone }}</li>
+					</ul>
+				</div>
+			</div>
+			<div class="actions__links">
+				<a class="actions__link" href="{{ path('app_back_user_index') }}">
+					{{ include('fragments/_button.html.twig', {'button_label' : 'Retour à la liste', 'action': ''}) }}
+				</a>
+				<a class="actions__link" href="{{ path('app_back_user_edit', {'id': user.id}) }}">
+					{{ include('fragments/_button.html.twig', {'button_label' : 'Modifier', 'action': 'edit'}) }}
+				</a>
+				{{ include('back/user/_delete_form.html.twig') }}
+			</div>
+		</div>
+		<div class="card-footer card__footer">
+			Ajouté le :
+			{{ user.createdAt|date('d-m-Y')}}
+			/ Dernière modification :
+			{{ user.updatedAt ? user.updatedAt|date('d-m-Y') : 'Aucune modification' }}
+		</div>
+	</div>
+
+{% endblock %}

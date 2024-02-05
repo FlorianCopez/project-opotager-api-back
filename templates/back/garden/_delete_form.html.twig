@@ -1,0 +1,23 @@
+{{ include('fragments/_button.html.twig', {'button_label' : 'Supprimer', 'action': 'delete', 'type': 'button'}) }}
+
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				Êtes-vous sûr de vouloir supprimer cet élément ?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+
+				<form method="post" action="{{ path('app_back_garden_delete', {'id': garden.id}) }}" id="deleteForm">
+					<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ garden.id) }}">
+					{{ include('fragments/_button.html.twig', {'button_label' : 'Supprimer', 'action': 'delete', 'type': 'submit'}) }}
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

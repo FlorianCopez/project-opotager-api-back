@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Garden;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @extends ServiceEntityRepository<Garden>
@@ -64,6 +65,17 @@ class GardenRepository extends ServiceEntityRepository
         $resultSet = $conn->executeQuery($sql, ['dist' => $dist]);
 
         return $resultSet->fetchAllAssociative();
+    }
+
+    public function findGardensInModeration()
+    {
+        return $this->createQueryBuilder('g')
+        ->leftJoin('g.pictures', 'p')
+        ->where('g.checked = :checked')
+        ->setParameter('checked', 'New')
+        ->orderBy('g.createdAt', 'ASC')
+        ->getQuery()
+        ->getResult();
     }
 
     //    /**

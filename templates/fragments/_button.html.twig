@@ -1,0 +1,39 @@
+{% if action == 'update' %}
+	<button type="submit" class="btn button__update">
+		{{ button_label|default('Enregistrer') }}
+	</button>
+{% elseif action == 'edit' %}
+	<button type="button" class="btn button__edit">
+		<i class="bi bi-pencil-square"></i>
+		{% if button_label is defined %}
+			{{ button_label }}
+		{% endif %}
+	</button>
+{% elseif action == 'show'%}
+	<button type="button" class="btn button__show">
+		<i class="bi bi-eye"></i>
+		{% if button_label is defined %}
+			{{ button_label }}
+		{% endif %}
+	</button>
+{% elseif action == 'delete' %}
+	{% if type == 'button' %}
+		<button type="{{type}}" class="btn button__delete" data-bs-toggle="modal" data-bs-target="#confirmationModal">
+			<i class="bi bi-file-earmark-x"></i>
+			{{button_label}}
+		</button>
+	{% elseif type == 'submit' %}
+		<button type="submit" class="btn button__delete">
+			<i class="bi bi-file-earmark-x"></i>
+			{{button_label}}
+		</button>
+	{% endif %}
+{% elseif action == 'add' %}
+	<button type="button" class="btn button__add">
+		{{ button_label }}
+	</button>
+{% else %}
+	<button type="button" class="btn button">
+		{{ button_label }}
+	</button>
+{% endif %}

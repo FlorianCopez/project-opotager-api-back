@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}O'potager | Dashboard
+{% endblock %}
+
+{% block titlePage %}DASHBOARD
+{% endblock %}
+
+{% block homeActive %}active-page
+{% endblock %}
+
+{% block body %}
+
+	<section class="dashboard">
+		<div class="dashboard__card card">
+			<i class="dashboard__card__icon bi bi-graph-up"></i>
+			<div class="dashboard__card__info card-body">
+				<span class="card-title">
+					{{ numberGardens }}
+				</span>
+				<p class="card-text">
+					Nombres de jardins</p>
+			</div>
+		</div>
+		<div class="dashboard__card card">
+			<i class="dashboard__card__icon bi bi-person"></i>
+			<div class="dashboard__card__info card-body">
+				<span class="card-title">
+					{{ numberUsers }}
+				</span>
+				<p class="card-text">
+					Nombres d'utilisateurs</p>
+			</div>
+		</div>
+		<div class="dashboard__card card">
+			<i class="dashboard__card__icon bi bi-hourglass-bottom"></i>
+			<div class="dashboard__card__info card-body">
+				<span class="card-title">
+					{{pagination.getTotalItemCount}}
+				</span>
+				<p class="card-text">
+					Jardins en attente de validation</p>
+			</div>
+		</div>
+	</section>
+
+
+	<section class="moderation">
+		<h2 class="moderation__title">Jardins en cours de modération
+			<span class="moderation__title__badge badge">{{pagination.getTotalItemCount}}</span>
+		</h2>
+		<div class="moderation__items accordion accordion-flush" id="accordionGardens">
+			{% for garden in pagination %}
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="flush-heading{{garden.id}}">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{garden.id}}" aria-expanded="false" aria-controls="flush-collapse{{garden.id}}">
+							{{garden.title}}
+						</button>
+					</h2>
+					<div id="flush-collapse{{garden.id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{garden.id}}" data-bs-parent="#accordionGardens">
+						<div class="accordion-body">
+							<div class="item">
+								{% for picture in garden.pictures %}
+									{% if loop.first %}
+										<img class="item__image" src="{{ picture.url }}" alt="image du jardin de {{ garden.user.username }}">
+									{% endif %}
+								{% endfor %}
+								<div class="item__body">
+									<h4 class="item__body__title">Informations du jardin :</h4>
+									<ul class="item__body__infos">
+										<li>{{ garden.user.username }}</li>
+										<li>{{ garden.user.email }}</li>
+										<li>{{ garden.location }},
+											{{ garden.postalCode }}
+											{{ garden.city }}</li>
+										<li>Date de publication :
+											{{ garden.createdAt|date('d-m-Y')}}</li>
+									</ul>
+								</div>
+								<div class="actions">
+									<a class="actions__link" href="{{ path('app_back_garden_show', {'id': garden.id}) }}">
+										{{ include('fragments/_button.html.twig', {'button_label' : '', 'action': 'show'}) }}
+									</a>
+									<a class="actions__link" href="{{ path('app_back_garden_edit', {'id': garden.id}) }}">
+										{{ include('fragments/_button.html.twig', {'button_label' : '', 'action': 'edit'}) }}
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+				<div class="moderation__pagination">
+					{{ knp_pagination_render(pagination) }}
+				</div>
+			</div>
+		</section>
+	{% endblock %}

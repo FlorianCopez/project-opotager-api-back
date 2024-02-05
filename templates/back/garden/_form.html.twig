@@ -1,0 +1,35 @@
+{{ form_start(form) }}
+<div class="form">
+	<div class="form__div">
+		<h2>Informations</h2>
+		{{ form_row(form.title) }}
+		{{ form_row(form.description)}}
+	</div>
+
+	<div class="form__div">
+		<h2>Localisation</h2>
+		{{form_row(form.location) }}
+		{{form_row(form.city) }}
+		{{form_row(form.postalCode) }}
+	</div>
+
+	<div class="form__div">
+		<h2>Caractéristiques</h2>
+		{{form_row(form.surface) }}
+		{{form_row(form.state) }}
+		{{form_row(form.water) }}
+		{{form_row(form.tool) }}
+		{{form_row(form.shed) }}
+	</div>
+
+	<div class="form__div">
+		<h2>Modération</h2>
+		{{form_row(form.checked)}}
+	</div>
+
+	<div class="form__action">
+		{{ include('fragments/_button.html.twig', {'button_label' : 'Valider', 'action': 'update'}) }}
+	</div>
+
+</div>
+{{ form_end(form) }}

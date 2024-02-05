@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}O'Potager | Ajouter un utilisateur
+{% endblock %}
+
+{% block titlePage %}Ajouter un utilisateur
+{% endblock %}
+
+{% block usersActive %}active-page
+{% endblock %}
+
+{% block body %}
+	{{ include('back/user/_form.html.twig') }}
+
+	<div class="actions__add">
+		<a class="actions__link" href="{{ path('app_back_user_index') }}">
+			{{ include('fragments/_button.html.twig', {'button_label' : 'Retour à la liste', 'action': ''}) }}
+		</a>
+	</div>
+
+{% endblock %}

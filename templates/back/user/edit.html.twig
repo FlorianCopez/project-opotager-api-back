@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}O'Potager | Modification de l'utilisateur
+	{{ user.username }}
+{% endblock %}
+
+{% block titlePage %}Modification de l'utilisateur
+	{{ user.username }}
+{% endblock %}
+
+{% block usersActive %}active-page
+{% endblock %}
+
+{% block body %}
+{{ include('back/user/_form.html.twig', {'button_label': 'Valider les modifications', 'action' : 'update'}) }}
+
+<div class="actions__edit">
+	<a class="actions__link" href="{{ path('app_back_user_show', {'id': user.id}) }}">
+		{{ include('fragments/_button.html.twig', {'button_label': 'Retour a l\'utilisateur', 'action' : 'show'}) }}
+	</a>
+</div>
+{% endblock %}
