@@ -15,7 +15,13 @@ class MainController extends AbstractController
     /**
      * @Route("/back", name="app_back_main_home")
      * 
-     * display home page
+     * Route to the home page, which displays the gardens currently being moderated, the number of gardens and the number of users.
+     * 
+     * @param GardenRepository $gardenRepository
+     * @param UserRepository $userRepository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
      */
     public function home(GardenRepository $gardenRepository, UserRepository $userRepository, PaginatorInterface $paginator, Request $request): Response
     {

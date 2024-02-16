@@ -19,6 +19,11 @@ class UserController extends AbstractController
 {
     /**
      * @Route("/", name="app_back_user_index", methods={"GET"})
+     * 
+     * Route to display the list of users
+     * 
+     * @param UserRepository $userRepository
+     * @return Response
      */
     public function index(UserRepository $userRepository): Response
     {
@@ -29,6 +34,13 @@ class UserController extends AbstractController
 
     /**
      * @Route("/ajouter", name="app_back_user_new", methods={"GET", "POST"})
+     * 
+     * route to display add a user
+     * 
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @param UserPasswordHasherInterface $userPasswordHasher
+     * @return Response
      */
     public function new(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher): Response
     {
@@ -57,6 +69,11 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_back_user_show", methods={"GET"})
+     * 
+     * Route to display one user by ID
+     * 
+     * @param User $user id of the user
+     * @return Response
      */
     public function show(User $user): Response
     {
@@ -67,6 +84,12 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}/modifier", name="app_back_user_edit", methods={"GET", "POST"})
+     * 
+     * @param Request $request
+     * @param User $user id of the user
+     * @param UserRepository $userRepository
+     * @param UserPasswordHasherInterface $userPasswordHasher
+     * @return Response
      */
     public function edit(Request $request, User $user, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher): Response
     {
@@ -105,6 +128,11 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_back_user_delete", methods={"POST"})
+     * 
+     * @param Request $request
+     * @param User $user
+     * @param UserRepository $userRepository
+     * @return Response
      */
     public function delete(Request $request, User $user, UserRepository $userRepository): Response
     {

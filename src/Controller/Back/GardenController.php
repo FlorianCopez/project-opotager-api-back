@@ -20,7 +20,10 @@ class GardenController extends AbstractController
     /**
      * @Route("/", name="app_back_garden_index", methods={"GET"})
      * 
-     * display a list of gardens
+     * Route to display the list of gardens
+     * 
+     * @param GardenRepository $gardenRepository
+     * @return Response
      */
     public function index(GardenRepository $gardenRepository): Response
     {
@@ -32,7 +35,10 @@ class GardenController extends AbstractController
     /**
      * @Route("/{id}", name="app_back_garden_show", methods={"GET"})
      * 
-     * display one garden by ID
+     * route to display one garden by ID
+     * 
+     * @param Garden $garden id of the garden
+     * @return Response
      */
     public function show(Garden $garden): Response
     {
@@ -43,6 +49,14 @@ class GardenController extends AbstractController
 
     /**
      * @Route("/{id}/modifier", name="app_back_garden_edit", methods={"GET", "POST"})
+     * 
+     * route to diplay update a garden by ID 
+     * 
+     * @param Request $request
+     * @param Garden $garden id of the garden
+     * @param GardenRepository $gardenRepository
+     * @param NominatimApiService $nominatimApi
+     * @return Response
      */
     public function edit(Request $request, Garden $garden, GardenRepository $gardenRepository, NominatimApiService $nominatimApi): Response
     {
@@ -79,11 +93,21 @@ class GardenController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_back_garden_delete", methods={"POST"})
+     * 
+     * path for delete garden by ID
+     * 
+     * @param Request $request
+     * @param Garden $garden id of the the garden
+     * @param GardenRepository $gardenRepository
+     * @return Response
      */
     public function delete(Request $request, Garden $garden, GardenRepository $gardenRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$garden->getId(), $request->request->get('_token'))) {
             $gardenRepository->remove($garden, true);
+            $this->addFlash('success', 'Le jardin a été supprimé avec succès.');
+        } else {
+            $this->addFlash('error', 'Une erreur est survenue lors que la suppression du jardin.');
         }
 
         return $this->redirectToRoute('app_back_garden_index', [], Response::HTTP_SEE_OTHER);
